@@ -63,7 +63,9 @@ console.log("Will read file...");
 */
 
 // Non-blocking (asynchronous way: type-2 (nested, level-4))
-fs.readFile("./txt/start.txt", "utf-8", (err, data1) => {
+fs.readFile("./txt/staaaaart.txt", "utf-8", (err, data1) => {
+  if (err) return console.log("Error... 💥");
+
   fs.readFile(`./txt/${data1}.txt`, "utf-8", (err, data2) => {
     console.log(data2);
     fs.readFile(`./txt/append.txt`, "utf-8", (err, data3) => {

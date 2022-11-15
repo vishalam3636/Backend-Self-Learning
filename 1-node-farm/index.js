@@ -1,11 +1,11 @@
 // This is our very first node file
 
-const { log } = require("console");
 const fs = require("fs");
+const http = require("http");
 
-//=================================================
-//== FS MODULE (readFileSync and writeFileSync) ==//
-//=================================================
+//=======================================================//
+//==📔📔 FS MODULE (readFileSync and writeFileSync) 📔=//
+//======================================================//
 
 /*
 const textInput = fs.readFileSync("./txt/input.txt", "utf-8");
@@ -16,22 +16,23 @@ const textOutput = `I am vishal and wowww!! oh-hooo!! said by SS. ❣️🤗`;
 fs.writeFileSync("./txt/output.txt", textOutput);
 console.log("File written...");
 // now run the index.js file and the output.txt file will get created in txt folder
-
 */
 
 //===============================================//
 //========== Synchronous vs Asynchronous ========//
 //===============================================//
 
-// Blocking (Synchronous way)
+//👉🏻 Blocking (Synchronous way)
+/*
 const textInput = fs.readFileSync("./txt/input.txt", "utf-8");
 console.log(textInput);
 
 const textOutput = `I am vishal and wowww!! oh-hooo!! said by SS. ❣️🤗`;
 fs.writeFileSync("./txt/output.txt", textOutput);
 console.log("File written...");
+*/
 
-// Non-blocking (asynchronous way: type-1, level-1)
+//👉🏻 Non-blocking (asynchronous way: type-1, level-1)
 /*
 fs.readFile("./txt/start.txt", "utf-8", (err, data) => {
   console.log(data);
@@ -63,7 +64,8 @@ console.log("Will read file...");
 */
 
 // Non-blocking (asynchronous way: type-2 (nested, level-4))
-fs.readFile("./txt/staaaaart.txt", "utf-8", (err, data1) => {
+/*
+fs.readFile("./txt/start.txt", "utf-8", (err, data1) => {
   if (err) return console.log("Error... 💥");
 
   fs.readFile(`./txt/${data1}.txt`, "utf-8", (err, data2) => {
@@ -77,3 +79,18 @@ fs.readFile("./txt/staaaaart.txt", "utf-8", (err, data1) => {
   });
 });
 console.log("Will read file...");
+*/
+
+//=======================================================//
+//================📔📔 Creating Server 📔📔============//
+//=======================================================//
+// for that we need another node module "http"
+
+const server = http.createServer((req, res) => {
+  // console.log(req);
+  res.end("Hello from the server!");
+});
+
+server.listen(8000, "127.0.0.1", () => {
+  console.log("Listening to requests on port 8000");
+});

@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const http = require("http");
+const url = require("url");
 
 //=======================================================//
 //==📔📔 FS MODULE (readFileSync and writeFileSync) 📔=//
@@ -98,9 +99,9 @@ server.listen(8000, "127.0.0.1", () => {
 */
 
 //=======================================================//
-//================📔📔 Routing 📔📔============//
+//===================📔📔 Routing 📔📔=================//
 //=======================================================//
-
+/*
 const server = http.createServer((req, res) => {
   console.log(req.url); // requested url getting consoled
 
@@ -113,6 +114,78 @@ const server = http.createServer((req, res) => {
   } else {
     res.writeHead(404, {
       "Content-type": "text/html", // browser is now expecting an html
+      "my-own-header": "hello-world",
+    });
+    res.end("<h1>Page not found!</h1>");
+  }
+});
+
+server.listen(8000, "127.0.0.1", () => {
+  console.log("Listening to requests on port 8000");
+});
+*/
+
+//=======================================================//
+//=========📔📔 Building a very simple API 📔📔========//
+//=======================================================//
+
+// Way-1:
+/*
+const server = http.createServer((req, res) => {
+  console.log(req.url);
+
+  const pathName = req.url;
+
+  if (pathName === "/" || pathName === "/overview") {
+    res.end("This is the overview");
+  } else if (pathName === "/product") {
+    res.end("This is the product");
+  } else if (pathName === "/api") {
+
+    // In below this part has  been modified, Here we are reading the data each time reaauest is made.
+    fs.readFile(`${__dirname}/dev-data/data.json`, "utf-8", (err, data) => {
+      const productData = JSON.parse(data);
+      res.writeHead(200, {
+        "Content-type": "application/json",
+      });
+      res.end(data);
+    });
+  } else {
+    res.writeHead(404, {
+      "Content-type": "text/html",
+      "my-own-header": "hello-world",
+    });
+    res.end("<h1>Page not found!</h1>");
+  }
+});
+
+server.listen(8000, "127.0.0.1", () => {
+  console.log("Listening to requests on port 8000");
+});
+*/
+
+// Way-2:
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const dataObj = JSON.parse(data);
+
+const server = http.createServer((req, res) => {
+  console.log(req.url);
+
+  const pathName = req.url;
+
+  if (pathName === "/" || pathName === "/overview") {
+    res.end("This is the overview");
+  } else if (pathName === "/product") {
+    res.end("This is the product");
+  } else if (pathName === "/api") {
+    // This is modified, we are not reading the data each time reaauest is made
+    res.writeHead(200, {
+      "Content-type": "application/json",
+    });
+    res.end(data);
+  } else {
+    res.writeHead(404, {
+      "Content-type": "text/html",
       "my-own-header": "hello-world",
     });
     res.end("<h1>Page not found!</h1>");
